@@ -8,25 +8,21 @@ pub enum Strand
     Unknown,
 }
 
-pub struct Feature
+pub struct Entry
 {
-    name:String,
     start:u32,
     end:u32,
-    strand:Strand
-}
-
-pub struct Chrom
-{
+    thick_start:u32,
+    thick_end:u32,
+    color:[u32; 3],
+    score:u32,
     name:String,
-    start:u32,
-    end:u32,
-    features:Vec<Feature>,
+    other:Vec<String>,
 }
 
 pub fn test_load()
 {
-    let bed_stream = File::open("/home/jon/Programming/github/tui-browse/examples/bigBedExample.bb").unwrap();
+    let bed_stream = File::open("/home/jon/Data/homo_sapiens.GRCh38.Regulatory_Build.regulatory_features.bb").unwrap();
     let mut reader = BigBedRead::open(bed_stream).unwrap();
     
     let chroms = reader.chroms();
@@ -47,10 +43,15 @@ pub fn test_load()
         println!("SQL missing!");
     }
     
-}
-
-pub fn add(left: u64, right: u64) -> u64 {
-    left + right
+    let intervals = reader.get_interval("1", 9949600, 10000000).unwrap();
+    
+    for int_result in intervals
+    {
+        if let Ok(int) = int_result
+        {
+            println!("{}, {}, {}", int.start, int.end, int.rest);
+        }
+    }
 }
 
 #[cfg(test)]
