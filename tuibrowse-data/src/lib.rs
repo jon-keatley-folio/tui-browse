@@ -12,13 +12,80 @@ pub struct Entry
 {
     start:u32,
     end:u32,
-    thick_start:u32,
-    thick_end:u32,
-    color:[u32; 3],
-    score:u32,
-    name:String,
     other:Vec<String>,
 }
+
+impl Entry
+{
+    pub fn new(start:u32, end:u32, other:Vec<String>) -> Entry
+    {
+        Entry 
+        {
+            start,
+            end,
+            other
+        }
+    }
+    
+    pub fn length(&self) -> u32
+    {
+        return self.end - self.start
+    }
+    
+    pub fn other(&self, index:usize) -> Option<String>
+    {
+        if index < self.other.len()
+        {
+            return Some(self.other[index].clone());
+        }
+        None
+    }
+}
+
+pub struct Interval
+{
+    chrom:String,
+    start:u32,
+    end:u32,
+    entries:Vec<Entry>,
+    delimiter:char
+}
+
+impl Interval
+{
+    pub fn new(chrom:String, start:u32, end:u32, delimiter:char) -> Interval
+    {
+        Interval {
+            chrom,
+            start,
+            end,
+            entries:Vec::new(),
+            delimiter
+        }
+    }
+    
+    pub fn chrom(&self) -> String
+    {
+        self.chrom.clone()
+    }
+    
+    pub fn delimiter(&self) -> char
+    {
+        self.delimiter
+    }
+    
+    pub fn length(&self) -> u32
+    {
+        self.end - self.start
+    }
+    
+    pub fn add_entry(&mut self, entry:Entry)
+    {
+        self.entries.push(entry);
+    }
+}
+
+//--------------------------------------------------------------------------------------
 
 pub fn test_load()
 {
@@ -49,7 +116,8 @@ pub fn test_load()
     {
         if let Ok(int) = int_result
         {
-            println!("{}, {}, {}", int.start, int.end, int.rest);
+            
+            println!("{}, {}, [{}]", int.start, int.end, int.rest);
         }
     }
 }
