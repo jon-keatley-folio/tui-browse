@@ -5,37 +5,63 @@ pub enum Strand
     Unknown,
 }
 
+pub enum BedElements
+{
+    Chrom,
+    ChromStart,
+    ChromEnd,
+    Name,
+    Score,
+    Strand,
+    ThickStart,
+    ThickEnd,
+    ItemRGB,
+    BlockCount,
+    BlockSizes,
+    BlockStarts
+}
+
+pub enum BedType
+{
+    String(String),
+    Uint(u32),
+    Int(f32),
+    Char(char),
+    IntArray(Vec<f32>)
+}
+
+pub struct Block
+{
+    start:u32,
+    end:u32
+}
+
 pub struct Entry
 {
     start:u32,
     end:u32,
-    other:Vec<String>,
+    rgb:[u32;3],
+    strand:Strand,
+    blocks:Vec<Block>,
+    score:u32,
 }
 
 impl Entry
 {
     pub fn new(start:u32, end:u32, other:Vec<String>) -> Entry
     {
-        Entry 
+        //parse other
+        
+        /*Entry 
         {
             start,
-            end,
-            other
-        }
+            end
+        }*/
     }
     
     pub fn length(&self) -> u32
     {
         return self.end - self.start
-    }
-    
-    pub fn other(&self, index:usize) -> Option<String>
-    {
-        if index < self.other.len()
-        {
-            return Some(self.other[index].clone());
-        }
-        None
     }
     
     pub fn start(&self) -> u32

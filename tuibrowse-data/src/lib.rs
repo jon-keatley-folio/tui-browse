@@ -15,6 +15,7 @@ pub fn test_load()
 {
     let bed_stream = File::open("/home/jon/Data/homo_sapiens.GRCh38.Regulatory_Build.regulatory_features.bb").unwrap();
     let mut reader = BigBedRead::open(bed_stream).unwrap();
+    //let mut full_reader = Reader
     
     let chroms = reader.chroms();
     
