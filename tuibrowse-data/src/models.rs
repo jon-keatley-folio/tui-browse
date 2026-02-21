@@ -40,6 +40,7 @@ pub struct Entry
 {
     start:u32,
     end:u32,
+    name:String,
     rgb:[u32;3],
     strand:Strand,
     blocks:Vec<Block>,
@@ -48,15 +49,51 @@ pub struct Entry
 
 impl Entry
 {
-    pub fn new(start:u32, end:u32, other:Vec<String>) -> Entry
+    pub fn new(start:u32, end:u32, other:Vec<String>) -> Result<Entry,String>
     {
+        let mut other_values= other.iter();
         //parse other
+        let name = match other_values.next()
+        {
+            Some(name) => name.clone(),
+            None => return Err("Missing name".to_string())  
+        };
         
-        /*Entry 
+        let score:u32 = match other_values.next()
+        {
+            Some(val) => {
+                match val.parse()
+                {
+                    Ok(v) => v,
+                    Err(_) => return Err("Score no a u32".to_string())
+                }
+            },
+            None => return Err("Missing score".to_string())
+        };
+        
+        let strand = match other_values.next()
+        {
+            Some(v) => {
+                match v.as_str()
+                {
+                    "+" => Strand::FivePrime,
+                    "-" => Strand::ThreePrime,
+                    _ => Strand::Unknown
+                }
+            },
+            None => return Err("Missing strand".to_string())
+        };
+        
+        Ok(Entry 
         {
             start,
-            end
-        }*/
+            end,
+            name,
+            rgb:[0,0,0],
+            strand,
+            blocks:Vec::new(),
+            score
+        })
     }
     
     pub fn length(&self) -> u32
@@ -72,9 +109,7 @@ impl Entry
     pub fn end(&self) -> u32
     {
         self.end
-    }
-    
-    
+    } 
 }
 
 pub struct Interval
