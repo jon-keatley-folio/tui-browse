@@ -1,17 +1,20 @@
 pub mod models;
+pub mod adaptor;
 
-use std::fs::File;
+use std::{fs::File, io::BufReader};
 use bigtools::BigBedRead;
+
 
 //TODO 
 //Create interface
 //implement interface for bigbed
-//figure out how to access additional values
+//figure out how to access additional values <-- switch to noodles
 
 
 //--------------------------------------------------------------------------------------
 
-pub fn test_load()
+
+pub fn test_bigtools_load()
 {
     let bed_stream = File::open("/home/jon/Data/homo_sapiens.GRCh38.Regulatory_Build.regulatory_features.bb").unwrap();
     let mut reader = BigBedRead::open(bed_stream).unwrap();
@@ -41,7 +44,6 @@ pub fn test_load()
     {
         if let Ok(int) = int_result
         {
-            
             println!("{}, {}, [{}]", int.start, int.end, int.rest);
         }
     }
@@ -53,6 +55,6 @@ mod tests {
 
     #[test]
     fn it_works() {
-        test_load();
+        test_bigtools_load();
     }
 }
