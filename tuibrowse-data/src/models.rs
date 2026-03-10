@@ -39,6 +39,8 @@ pub struct Entry
     strand:Strand,
     blocks:Vec<Block>,
     score:i16,
+    thick_start:u32,
+    thick_end:u32,
 }
 
 impl Entry
@@ -59,7 +61,7 @@ impl Entry
                 match val.parse()
                 {
                     Ok(v) => v,
-                    Err(_) => return Err("Score no a u32".to_string())
+                    Err(_) => return Err("Score not a u16".to_string())
                 }
             },
             None => -1
@@ -78,8 +80,30 @@ impl Entry
             None => return Err("Missing strand".to_string())
         };
         
-        //thick start - column 7
+        let thick_start:u32 = match other_values.next() //thick start - column 7
+        {
+            Some(v) => {
+                match v.parse()
+                {
+                    Ok(ts) => ts,
+                    Err(_) => 0
+                }
+            },
+            None => { 0 }
+        };
+
         //thick end - column 8
+        let thick_end:u32 = match other_values.next() //thick end - column 8
+        {
+            Some(v) => {
+                match v.parse()
+                {
+                    Ok(te) => te,
+                    Err(_) => 0
+                }
+            },
+            None => { 0 }
+        };
         //RGB (should be byte,byte,byte) - column 9
         //block cound - column 10
         //block sizes (u32,u32,u32...) - column 11
@@ -93,7 +117,9 @@ impl Entry
             rgb:[0,0,0],
             strand,
             blocks:Vec::new(),
-            score
+            score,
+            thick_start,
+            thick_end,
         })
     }
     
@@ -154,4 +180,13 @@ impl Interval
     {
         self.entries.push(entry);
     }
+}
+
+#[cfg(test)]
+mod model_tests {
+    use super::*;
+
+    /*#[test]
+    fn it_works() {
+    }*/
 }

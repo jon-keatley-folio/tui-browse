@@ -90,4 +90,11 @@ impl BrowserFile for BigBed
     }
 }
 
-//TODO add tests
+#[cfg(test)]
+mod adaptor_tests {
+    use super::*;
+
+    /*#[test]
+    fn it_works() {
+    }*/
+}

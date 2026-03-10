@@ -16,7 +16,7 @@ use bigtools::BigBedRead;
 
 pub fn test_bigtools_load()
 {
-    let bed_stream = File::open("/home/jon/Data/homo_sapiens.GRCh38.Regulatory_Build.regulatory_features.bb").unwrap();
+    let bed_stream = File::open("../examples/dm6.chromAlias.bb").unwrap();
     let mut reader = BigBedRead::open(bed_stream).unwrap();
     //let mut full_reader = Reader
     
@@ -37,8 +37,8 @@ pub fn test_bigtools_load()
     {
         println!("SQL missing!");
     }
-    
-    let intervals = reader.get_interval("1", 9949600, 10000000).unwrap();
+
+    let intervals = reader.get_interval("chr2L", 5052019, 5057944).unwrap();
     
     for int_result in intervals
     {
